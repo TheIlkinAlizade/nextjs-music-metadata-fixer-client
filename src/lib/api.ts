@@ -56,3 +56,24 @@ export async function applyMetadata(
 
   return res.blob();
 }
+
+
+export async function batchAutoFix(files: File[]) {
+  const formData = new FormData();
+  files.forEach((f) => formData.append("files", f));
+
+  const res = await fetch(`${API_URL}/api/batch-auto-fix/`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error("Batch auto-fix failed");
+  }
+
+  const errors = JSON.parse(res.headers.get("X-Batch-Errors") ?? "[]");
+  const skipped = JSON.parse(res.headers.get("X-Batch-Skipped") ?? "[]");
+  const blob = await res.blob();
+
+  return { blob, errors, skipped };
+}
