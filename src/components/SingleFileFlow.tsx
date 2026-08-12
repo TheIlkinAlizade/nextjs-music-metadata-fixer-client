@@ -7,6 +7,7 @@ import type { AutoSearchResult } from "@/src/lib/types";
 import MatchCard from "@/src/components/MatchCard";
 import ManualEntryForm from "@/src/components/ManualEntryForm";
 import type { Match } from "@/src/lib/types";
+import LoadingBars from "./LoadingBars";
 
 export default function SingleFileFlow() {
     const [file, setFile] = useState<File | null>(null);
@@ -76,7 +77,7 @@ export default function SingleFileFlow() {
                 </p>
             )}
 
-            {loading && <p className="mt-4 text-sm text-blue-600">Searching for matches...</p>}
+            {loading && <LoadingBars label="Searching for matches..." />}
 
             {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
 
@@ -102,7 +103,7 @@ export default function SingleFileFlow() {
                                         onSelect={handleSelectMatch}
                                     />
                                 ))}
-                                {applying && <p className="mt-4 text-sm text-blue-600">Applying metadata and preparing download...</p>}
+                                {applying && <LoadingBars label="Applying metadata..." />}
                                 {applyError && <p className="mt-4 text-sm text-red-600">{applyError}</p>}
                             </div>
                         </div>
